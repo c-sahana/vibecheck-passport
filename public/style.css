@@ -1,0 +1,361 @@
+/* 🌍 GLOBAL STYLES */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Quicksand", sans-serif;
+  background: linear-gradient(to bottom right, #f7f0ff, #e6f7ff);
+  color: #333;
+  transition: background 0.3s ease-in-out;
+}
+
+.container {
+  width: 90%;
+  max-width: 900px;
+  text-align: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  margin: 2rem auto;
+}
+
+/* ✈️ NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #7744f6;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar .logo {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.navbar .nav-links a {
+  color: white;
+  margin: 0 0.8rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.navbar .nav-links a:hover {
+  color: #ffd700;
+}
+
+/* ✍️ Inputs & Buttons */
+input,
+textarea {
+  width: 75%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-top: 0.5rem;
+}
+
+button {
+  background-color: #7744f6;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 1rem;
+}
+
+button:hover {
+  background-color: #5a2fd1;
+  transform: scale(1.05);
+}
+
+/* 🎟 Visa Card vibe (scrapbook style) */
+.visa-card {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  padding: 1rem;
+  background: #fffef9;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.visa-card:hover {
+  transform: scale(1.02) rotate(0deg);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* 🎯 Badge board look */
+.badge-board {
+  position: relative;
+  width: 80%;
+  max-width: 650px;
+  height: 350px;
+  margin: 2rem auto;
+  background-color: #fff7e6;
+  border: 3px dashed #d18b47;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* 🎨 Stickers hover fun */
+.sticker {
+  position: absolute;
+  font-size: 2.5rem;
+  transition: transform 0.2s ease;
+}
+
+.sticker:hover {
+  transform: rotate(0deg) scale(1.2);
+}
+
+/* 📝 Handwritten feel for answers */
+.answer {
+  font-family: "Comic Sans MS", "Quicksand", cursive;
+  font-size: 1.2rem;
+  color: #222;
+}
+
+/* ✨ Animations for customs badge pop */
+.emoji-pop {
+  font-size: 2.5rem;
+  animation: popOut 0.8s ease forwards;
+  margin-top: 10px;
+}
+@keyframes popOut {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ✈️ Passport timeline route line */
+.route-line {
+  position: absolute;
+  top: 120px; /* starts below the title */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 100%;
+  background: repeating-linear-gradient(
+    to bottom,
+    #bbb,
+    #bbb 8px,
+    transparent 8px,
+    transparent 16px
+  ); /* dotted effect */
+  z-index: 1;
+}
+
+/* 📍 Cards alternate around the line */
+.left-card {
+  justify-self: end;
+}
+.right-card {
+  justify-self: start;
+}
+
+/* 🛩️ Plane marker on the route */
+.plane-marker {
+  position: relative;
+  left: -12px; /* nudge to center on the dotted line */
+  font-size: 1.3rem;
+  margin: 30px 0;
+  text-align: center;
+  z-index: 3;
+}
+
+.vibe-line {
+  font-size: 1.1rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #7f5af0, #ff80bf);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0.2rem 0;
+}
+
+.drop-line {
+  display: inline-block;
+  background-color: #ffe6f2;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ff4fa3;
+  transform: rotate(-1deg);
+  margin: 0.3rem 0;
+  box-shadow: 0 3px 6px rgba(255, 79, 163, 0.2);
+}
+
+/* 🌟 Make input/textarea + buttons always on separate lines */
+.mood-input,
+.name-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center align nicely */
+  gap: 12px; /* space between text box and button */
+}
+
+/* ✍️ Tweak textarea for main page */
+textarea#mood {
+  width: 90%;
+  max-width: 600px;
+  height: 120px;
+  font-size: 1.1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #d3bfff;
+  background: #faf7ff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: 0.2s ease-in-out;
+}
+
+textarea#mood:focus {
+  border-color: #a46bff;
+  box-shadow: 0 4px 14px rgba(164, 107, 255, 0.3);
+  outline: none;
+}
+
+/* ✍️ Tweak input for home page */
+input#username {
+  width: 90%;
+  max-width: 400px;
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: 2px solid #d3bfff;
+  background: #faf7ff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+input#username:focus {
+  border-color: #a46bff;
+  box-shadow: 0 4px 14px rgba(164, 107, 255, 0.3);
+  outline: none;
+}
+
+/* 🏠 HOME PAGE input/button layout */
+.name-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.name-input-container input {
+  width: 90%;
+  max-width: 400px;
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: 2px solid #d3bfff;
+  background: #faf7ff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.name-input-container input:focus {
+  border-color: #a46bff;
+  box-shadow: 0 4px 14px rgba(164, 107, 255, 0.3);
+  outline: none;
+}
+
+.name-input-container button {
+  width: fit-content;
+}
+
+/* ✨ after-start section */
+.after-start {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.after-start .after-text {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #5a2fd1;
+  margin-bottom: 1rem;
+}
+
+/* 🎭 emojis shuffle around */
+.emoji-shuffle {
+  font-size: 1.2rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.emoji-shuffle span {
+  display: inline-block;
+  animation: floaty 2s infinite ease-in-out;
+}
+
+.emoji-shuffle span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+.emoji-shuffle span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.emoji-shuffle span:nth-child(4) {
+  animation-delay: 0.9s;
+}
+.emoji-shuffle span:nth-child(5) {
+  animation-delay: 1.2s;
+}
+
+/* 🌀 Keyframes for floating emojis */
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+}
+
+/* 🌟 Zig-Zag Background for Passport Page */
+.passport-background {
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+
+  /* Faint zig-zag dotted effect */
+  background-image: repeating-linear-gradient(
+      135deg,
+      rgba(180, 180, 180, 0.2) 0px,
+      rgba(180, 180, 180, 0.2) 2px,
+      transparent 2px,
+      transparent 12px
+    ),
+    repeating-linear-gradient(
+      -135deg,
+      rgba(180, 180, 180, 0.2) 0px,
+      rgba(180, 180, 180, 0.2) 2px,
+      transparent 2px,
+      transparent 12px
+    );
+  background-size: 20px 20px;
+}

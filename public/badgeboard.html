@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🎯 Badge Board</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .board-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+      .sticker {
+        position: absolute;
+        font-size: 2.8rem;
+        transform: rotate(var(--tilt));
+        transition: transform 0.2s ease;
+      }
+      .sticker:hover {
+        transform: scale(1.2) rotate(0deg);
+      }
+      .empty-text {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+      .collect-btn {
+        background-color: #7744f6;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.2rem;
+        font-size: 1rem;
+        border-radius: 10px;
+        cursor: pointer;
+        transition:
+          background-color 0.3s ease,
+          transform 0.2s ease;
+      }
+      .collect-btn:hover {
+        background-color: #5a2fd1;
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🌍 NAV BAR -->
+    <nav class="navbar">
+      <h2 class="logo">🎯 Badge Board</h2>
+      <div class="nav-links">
+        <a href="home.html">🏠 Home</a>
+        <a href="main.html">🛂 Mood Check-In</a>
+        <a href="passport.html">📖 Passport</a>
+        <a href="badgeboard.html">🎯 Badge Board</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1 class="board-title">🌈 Emotional Badge Galaxy</h1>
+      <p class="sub">
+        All your emotional “badge stickers” from every country you visited!
+      </p>
+
+      <div class="badge-board" id="badge-board"></div>
+    </div>
+
+    <script>
+      const userName = localStorage.getItem("username") || "Guest";
+      const board = document.getElementById("badge-board");
+
+      // 🔄 pull badges from passport entries
+      const journey = JSON.parse(
+        localStorage.getItem(`passport-${userName}`) || "[]",
+      );
+      let badges = journey.map((entry) => entry.baggage?.badge).filter(Boolean);
+
+      // Limit max badges on board for neatness
+      if (badges.length > 40) {
+        badges = badges.slice(0, 40);
+      }
+
+      // 🎯 If no badges → empty message + button
+      if (badges.length === 0) {
+        const msg = document.createElement("p");
+        msg.className = "empty-text";
+        msg.innerText =
+          "🕳️ No badges yet — go visit some emotional countries first! 🌍";
+
+        const btn = document.createElement("button");
+        btn.className = "collect-btn";
+        btn.innerText = "✨ Ready to collect badges!";
+        btn.onclick = () => (window.location.href = "main.html");
+
+        board.appendChild(msg);
+        board.appendChild(btn);
+      } else {
+        // 🎨 Random scatter of badge stickers
+        badges.forEach((badge) => {
+          const sticker = document.createElement("div");
+          sticker.className = "sticker";
+          sticker.innerText = badge;
+
+          // 🎲 slight random tilt for scrapbook look
+          sticker.style.setProperty(
+            "--tilt",
+            `${(Math.random() * 10 - 5).toFixed(1)}deg`,
+          );
+
+          const padding = 50;
+          const boardWidth = board.clientWidth - padding;
+          const boardHeight = board.clientHeight - padding;
+
+          const x = Math.random() * boardWidth;
+          const y = Math.random() * boardHeight;
+
+          sticker.style.left = `${x}px`;
+          sticker.style.top = `${y}px`;
+
+          board.appendChild(sticker);
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🛂 Customs Check | VibeCheck Passport</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ✈️ Visa card styling */
+      .visa-card {
+        background: #fff8e7;
+        border: 2px dashed #b5651d;
+        padding: 1.5rem;
+        margin-top: 1.5rem;
+        border-radius: 12px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        position: relative;
+        font-family: "Quicksand", sans-serif;
+        transform: rotate(-1deg);
+        animation: fadeIn 0.5s ease-in;
+      }
+      .visa-stamp {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 80px;
+        opacity: 0;
+        transform: scale(0.5);
+        transition: all 0.4s ease;
+      }
+      .visa-stamp.stamped {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      .baggage-img {
+        width: 140px;
+        margin: 1rem auto;
+        display: block;
+      }
+      .wiggle {
+        animation: wiggle 0.5s ease;
+      }
+      @keyframes wiggle {
+        0% {
+          transform: rotate(0deg);
+        }
+        25% {
+          transform: rotate(3deg);
+        }
+        50% {
+          transform: rotate(-3deg);
+        }
+        75% {
+          transform: rotate(3deg);
+        }
+        100% {
+          transform: rotate(0deg);
+        }
+      }
+      /* 🎯 Badge pop animation */
+      .emoji-pop {
+        font-size: 2.5rem;
+        animation: popOut 0.8s ease forwards;
+        margin-top: 10px;
+      }
+      @keyframes popOut {
+        0% {
+          transform: translateY(0) scale(0.5);
+          opacity: 0;
+        }
+        50% {
+          transform: translateY(-20px) scale(1.2);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(0) scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <h2 class="logo">🎫 VibeCheck Passport</h2>
+      <div class="nav-links">
+        <a href="home.html">🏠 Home</a>
+        <a href="main.html">🛂 Mood Check-In</a>
+        <a href="passport.html">📖 Passport</a>
+        <a href="badgeboard.html">🎯 Badge Board</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>🛂 Customs Checkpoint</h1>
+      <p id="country-display" style="font-size: 1.3rem; font-weight: bold"></p>
+
+      <!-- ✏️ NEW Rename Country Section -->
+      <div id="rename-section" style="margin-top: 0.8rem">
+        <input
+          id="rename-input"
+          type="text"
+          placeholder="✏️ Want to rename this country?"
+          style="
+            padding: 6px;
+            border-radius: 8px;
+            width: 60%;
+            margin-bottom: 6px;
+          "
+        />
+        <button id="rename-btn" style="background-color: #ff5e99">
+          ✅ Rename
+        </button>
+      </div>
+      <p
+        id="rename-feedback"
+        style="font-size: 0.9rem; color: green; display: none"
+      >
+        ✅ Country renamed!
+      </p>
+
+      <p id="customs-question" style="font-style: italic"></p>
+      <p style="color: red; font-weight: bold">
+        ⚠️ Answer honestly or you won’t be allowed entry! 😆
+      </p>
+
+      <textarea
+        id="customs-answer"
+        placeholder="Type your answer here..."
+      ></textarea>
+      <br />
+      <button onclick="submitCustomsAnswer()">✅ Submit Answer</button>
+
+      <div id="visa-section"></div>
+
+      <button
+        onclick="window.location.href='passport.html'"
+        style="margin-top: 1.5rem; background-color: #2a7cc2"
+      >
+        📖 Go to Passport
+      </button>
+    </div>
+
+    <script>
+      // 🛂 Grab data saved from mood page
+      const lastReply = localStorage.getItem("lastReply") || "";
+      const [countryLine, questionPart] = lastReply.split("Customs question:");
+      const country = countryLine ? countryLine.trim() : "Unknownland";
+      const question = questionPart ? questionPart.trim() : "";
+
+      document.getElementById("country-display").innerText =
+        `🌍 You are entering: ${country}`;
+      document.getElementById("customs-question").innerText = `❓ ${question}`;
+
+      // 🎨 Rename Feature Logic
+      const renameBtn = document.getElementById("rename-btn");
+      const renameInput = document.getElementById("rename-input");
+      const renameFeedback = document.getElementById("rename-feedback");
+      let finalCountry = country; // ✅ this will be saved in passport
+
+      renameBtn.addEventListener("click", () => {
+        const newName = renameInput.value.trim();
+        if (newName) {
+          finalCountry = newName;
+          document.getElementById("country-display").innerText =
+            `🌍 You are entering: ${finalCountry}`;
+          renameFeedback.style.display = "block";
+          setTimeout(() => (renameFeedback.style.display = "none"), 1500);
+          renameInput.value = ""; // clear after renaming
+        } else {
+          alert("✍️ Please type a new name before renaming!");
+        }
+      });
+
+      // 🎨 Random visa stamps
+      const visaStamps = [
+        "images/stamps/stamp1.png",
+        "images/stamps/stamp2.png",
+        "images/stamps/stamp3.png",
+        "images/stamps/stamp4.png",
+        "images/stamps/stamp5.png",
+        "images/stamps/stamp6.png",
+        "images/stamps/stamp7.png",
+        "images/stamps/stamp8.png",
+        "images/stamps/stamp9.png",
+        "images/stamps/stamp10.png",
+        "images/stamps/stamp11.png",
+        "images/stamps/stamp12.png",
+      ];
+
+      // 🎨 Random pastel colors for cards
+      const pastelColors = [
+        "#FFF8E7",
+        "#E7FFF5",
+        "#F5E7FF",
+        "#FFE7F0",
+        "#E7F0FF",
+      ];
+
+      // ✅ Submit customs answer
+      async function submitCustomsAnswer() {
+        const answer = document.getElementById("customs-answer").value.trim();
+        if (!answer) {
+          alert("✍️ Please answer the customs question before proceeding!");
+          return;
+        }
+
+        // 🎒 call baggage generator
+        const res = await fetch("/generate-baggage", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ customsAnswer: answer }),
+        });
+        const baggage = await res.json();
+
+        // show visa card
+        showVisaCard(finalCountry, question, answer, baggage);
+      }
+
+      // 🎫 show visa card UI
+      function showVisaCard(country, question, answer, baggage) {
+        const visaSection = document.getElementById("visa-section");
+        visaSection.innerHTML = "";
+
+        const visaCard = document.createElement("div");
+        visaCard.className = "visa-card";
+        visaCard.style.background =
+          pastelColors[Math.floor(Math.random() * pastelColors.length)];
+
+        // add stamp
+        const stamp = document.createElement("img");
+        stamp.src = visaStamps[Math.floor(Math.random() * visaStamps.length)];
+        stamp.className = "visa-stamp";
+        visaCard.appendChild(stamp);
+        setTimeout(() => stamp.classList.add("stamped"), 100);
+
+        // header
+        const header = document.createElement("div");
+        header.className = "visa-header";
+        header.innerText = `🎉 Congrats! You unlocked a visa to ${country}`;
+        visaCard.appendChild(header);
+
+        // suitcase
+        const bagImg = document.createElement("img");
+        bagImg.src = "images/baggage.png";
+        bagImg.className = "baggage-img";
+        visaCard.appendChild(bagImg);
+
+        // Q + A
+        const qa = document.createElement("p");
+        qa.innerHTML = `<b>❓ Customs asked:</b> ${question} <br> <b>📝 Your Answer:</b> ${answer}`;
+        visaCard.appendChild(qa);
+
+        // 🎯 claim baggage btn
+        const claimBtn = document.createElement("button");
+        claimBtn.className = "claim-btn";
+        claimBtn.innerText = "🎯 You unlocked baggage with a badge! Claim it!";
+        claimBtn.onclick = () => {
+          bagImg.classList.add("wiggle");
+
+          // pop out emoji
+          const emoji = document.createElement("div");
+          emoji.className = "emoji-pop";
+          emoji.innerText = baggage.badge || "🧳";
+          visaCard.appendChild(emoji);
+
+          // save entry to passport (localStorage)
+          saveEntry(
+            finalCountry, // ✅ saves renamed country if changed
+            question,
+            answer,
+            baggage.description,
+            baggage.badge,
+          );
+
+          claimBtn.disabled = true;
+          claimBtn.innerText = "✅ Baggage Claimed!";
+        };
+        visaCard.appendChild(claimBtn);
+
+        visaSection.appendChild(visaCard);
+      }
+
+      // ✅ save visit to passport in localStorage
+      function saveEntry(country, question, answer, baggageDesc, badge) {
+        const username = localStorage.getItem("username") || "Guest";
+        let journey = JSON.parse(
+          localStorage.getItem(`passport-${username}`) || "[]",
+        );
+
+        journey.push({
+          country, // ✅ this is now finalCountry
+          question,
+          answer,
+          baggage: { description: baggageDesc, badge: badge },
+        });
+
+        localStorage.setItem(`passport-${username}`, JSON.stringify(journey));
+
+        // (optional future use) also ping backend
+        fetch("/save-entry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username,
+            country,
+            question,
+            answer,
+            baggage: baggageDesc,
+            badge,
+          }),
+        });
+      }
+    </script>
+  </body>
+</html>

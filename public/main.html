@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🛂 Mood Check-In | VibeCheck Passport</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+      .plane {
+        display: inline-block;
+        animation: bounce 1s infinite;
+      }
+
+      /* ✨ new style for vibe line */
+      .vibe-line {
+        font-size: 1.1rem;
+        margin-top: 0.3rem;
+        color: #5a2fd1;
+        font-weight: 600;
+      }
+
+      /* 💌 subtle emphasis for “drop your feels” line */
+      .drop-line {
+        font-size: 1.1rem;
+        margin-top: 0.3rem;
+        color: #ff5e99;
+        font-weight: 600;
+      }
+
+      .hint {
+        font-size: 1rem;
+        color: #555;
+        margin-top: 0.8rem;
+        font-style: italic;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🌍 NAVBAR -->
+    <nav class="navbar">
+      <h2 class="logo">🎫 VibeCheck Passport</h2>
+      <div class="nav-links">
+        <a href="home.html">🏠 Home</a>
+        <a href="main.html" class="active">🛂 Mood Check-In</a>
+        <a href="passport.html">📖 Passport</a>
+        <a href="badgeboard.html">🎯 Badge Board</a>
+      </div>
+    </nav>
+
+    <!-- 🛂 MOOD CHECK SECTION -->
+    <div class="container">
+      <h1>🛂 Mood Check-In</h1>
+
+      <!-- 👋 Greeting will fill in user name -->
+      <p id="greeting" style="font-size: 1.3rem; font-weight: bold"></p>
+
+      <br />
+
+      <!-- ✨ New creative text lines -->
+      <p class="vibe-line">
+        🌍 Your mood will decide which emotional country you’ll fly now.
+      </p>
+      <p class="drop-line">
+        📖 Drop your feels, we’ll stamp your passport ✈️💌
+      </p>
+
+      <p class="hint">💡 Hint: Your mood is your ticket — be honest!</p>
+
+      <div class="mood-input">
+        <textarea
+          id="mood"
+          placeholder="Write your current mood here (e.g. ‘I feel excited but nervous’) ✍️"
+        ></textarea>
+        <button onclick="submitMood()">
+          Submit Mood <span class="plane">✈️</span>
+        </button>
+      </div>
+
+      <div id="vibe-response" style="display: none"></div>
+    </div>
+
+    <script>
+      // 👋 show greeting with username
+      const user = localStorage.getItem("username") || "Traveler";
+      document.getElementById(
+        "greeting"
+      ).innerText = `Hey ${user}, how are you feeling today?`;
+
+      async function submitMood() {
+        const mood = document.getElementById("mood").value.trim();
+        const vibeResponse = document.getElementById("vibe-response");
+
+        if (!mood) {
+          vibeResponse.style.display = "block";
+          vibeResponse.innerText =
+            "⚠️ Please enter how you feel before checking in!";
+          return;
+        }
+
+        vibeResponse.style.display = "block";
+        vibeResponse.innerText =
+          "🛂 Processing your vibe... stamping your passport...";
+
+        try {
+          const res = await fetch("/vibecheck", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ mood }),
+          });
+          const data = await res.json();
+          if (data.country && data.question) {
+            // save response neatly for customs page
+            localStorage.setItem(
+              "lastReply",
+              `${data.country} Customs question: ${data.question}`
+            );
+            window.location.href = "customs.html";
+          } else {
+            vibeResponse.innerText = "❌ No vibe detected. Try again!";
+          }
+        } catch (err) {
+          console.error(err);
+          vibeResponse.innerText = "💥 Something went wrong. Try again!";
+        }
+      }
+    </script>
+  </body>
+</html>

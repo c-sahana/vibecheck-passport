@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>📖 Emotional Passport</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ✅ Zig-zag background only for passport area */
+      .passport-area {
+        position: relative;
+        padding: 2rem 0;
+        background-image: repeating-linear-gradient(
+            -45deg,
+            transparent 0px,
+            transparent 10px,
+            rgba(180, 180, 180, 0.3) 10px,
+            rgba(180, 180, 180, 0.3) 12px
+          ),
+          repeating-linear-gradient(
+            45deg,
+            transparent 0px,
+            transparent 10px,
+            rgba(180, 180, 180, 0.3) 10px,
+            rgba(180, 180, 180, 0.3) 12px
+          );
+        background-size: 20px 20px;
+        z-index: 1;
+      }
+
+      .passport-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        margin-top: 2rem;
+        position: relative;
+        z-index: 2;
+      }
+
+      .visa-card {
+        background: #fffef9;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        font-family: "Quicksand", sans-serif;
+        border: 3px solid var(--border-color);
+        transform: rotate(var(--tilt));
+        animation: fadeIn 0.5s ease-in-out;
+        width: 45%;
+        max-width: 340px;
+        position: relative;
+        z-index: 3; /* ✅ stays above zigzag */
+      }
+
+      .visa-card:not(:first-child) {
+        margin-top: -9rem;
+      }
+
+      .visa-stamp {
+        width: 70px;
+        opacity: 1;
+        display: block;
+        margin: 0.5rem auto;
+      }
+
+      .baggage-label {
+        margin-top: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        color: #5a2fd1;
+      }
+
+      .baggage-desc {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .badge-sticker {
+        font-size: 2.5rem;
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        transform: rotate(-5deg);
+      }
+
+      .question {
+        font-style: italic;
+        color: #444;
+        margin: 0.3rem 0;
+      }
+
+      .answer {
+        font-weight: 600;
+        font-size: 1.2rem;
+        margin: 0.3rem 0 0.5rem;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .passport-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <h2 class="logo">🎫 VibeCheck Passport</h2>
+      <div class="nav-links">
+        <a href="home.html">🏠 Home</a>
+        <a href="main.html">🛂 Mood Check-In</a>
+        <a href="passport.html">📖 Passport</a>
+        <a href="badgeboard.html">🎯 Badge Board</a>
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>📖 Your Emotional Passport</h1>
+      <p class="sub">
+        🌈 All the emotional “countries” you’ve visited and the baggage you
+        claimed along the way.
+      </p>
+
+      <!-- ✅ WRAP the grid in passport-area for zigzag background -->
+      <div class="passport-area">
+        <div class="passport-grid" id="passport-grid"></div>
+      </div>
+
+      <p
+        id="empty-message"
+        style="display: none; font-style: italic; margin-top: 2rem"
+      >
+        🕳️ Your passport is empty! Submit a mood to visit your first country ✈️
+      </p>
+    </div>
+
+    <script>
+      const userName = localStorage.getItem("username") || "Guest";
+      const grid = document.getElementById("passport-grid");
+      const emptyMsg = document.getElementById("empty-message");
+
+      const journey = JSON.parse(
+        localStorage.getItem(`passport-${userName}`) || "[]"
+      );
+
+      const borderColors = [
+        "#FFD9EC",
+        "#E0FFD4",
+        "#FFF3B0",
+        "#C7E6FF",
+        "#FFE4C4",
+      ];
+      const visaStamps = [
+        "images/stamps/stamp1.png",
+        "images/stamps/stamp2.png",
+        "images/stamps/stamp3.png",
+        "images/stamps/stamp4.png",
+        "images/stamps/stamp5.png",
+        "images/stamps/stamp6.png",
+        "images/stamps/stamp7.png",
+        "images/stamps/stamp8.png",
+        "images/stamps/stamp9.png",
+        "images/stamps/stamp10.png",
+        "images/stamps/stamp11.png",
+        "images/stamps/stamp12.png",
+      ];
+
+      renderPassport();
+
+      function renderPassport() {
+        grid.innerHTML = "";
+        if (journey.length === 0) {
+          emptyMsg.style.display = "block";
+          return;
+        }
+        emptyMsg.style.display = "none";
+
+        [...journey].reverse().forEach((entry, index) => {
+          const visaCard = document.createElement("div");
+          visaCard.className = "visa-card";
+
+          visaCard.style.setProperty(
+            "--tilt",
+            `${(Math.random() * 4 - 2).toFixed(1)}deg`
+          );
+          visaCard.style.setProperty(
+            "--border-color",
+            borderColors[Math.floor(Math.random() * borderColors.length)]
+          );
+
+          const countryTitle = document.createElement("h2");
+          countryTitle.innerText = `🌍 ${entry.country}`;
+          visaCard.appendChild(countryTitle);
+
+          const stamp = document.createElement("img");
+          stamp.src = visaStamps[Math.floor(Math.random() * visaStamps.length)];
+          stamp.className = "visa-stamp";
+          stamp.style.transform = `rotate(${(Math.random() * 30 - 15).toFixed(
+            1
+          )}deg)`;
+          visaCard.appendChild(stamp);
+
+          const question = document.createElement("p");
+          question.className = "question";
+          question.innerText = `❓ Customs asked: ${entry.question}`;
+          visaCard.appendChild(question);
+
+          const answer = document.createElement("p");
+          answer.className = "answer";
+          answer.innerText = `📝 You said: ${entry.answer}`;
+          visaCard.appendChild(answer);
+
+          const bagLabel = document.createElement("p");
+          bagLabel.className = "baggage-label";
+          bagLabel.innerText = "🎒 Baggage you claimed:";
+          visaCard.appendChild(bagLabel);
+
+          const bagDesc = document.createElement("p");
+          bagDesc.className = "baggage-desc";
+          bagDesc.innerText =
+            entry.baggage?.description || "Mysterious baggage";
+          visaCard.appendChild(bagDesc);
+
+          if (entry.baggage?.badge) {
+            const badgeSticker = document.createElement("div");
+            badgeSticker.className = "badge-sticker";
+            badgeSticker.innerText = entry.baggage.badge;
+            visaCard.appendChild(badgeSticker);
+          }
+
+          if (index % 2 === 0) {
+            visaCard.style.justifySelf = "end";
+          } else {
+            visaCard.style.justifySelf = "start";
+          }
+
+          grid.appendChild(visaCard);
+        });
+      }
+    </script>
+  </body>
+</html>

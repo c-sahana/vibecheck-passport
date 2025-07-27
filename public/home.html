@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>🌍 VibeCheck Passport</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+      .wave {
+        display: inline-block;
+        animation: wave 1.2s infinite;
+      }
+      @keyframes wave {
+        0%,
+        60%,
+        100% {
+          transform: rotate(0deg);
+        }
+        30% {
+          transform: rotate(20deg);
+        }
+      }
+      .tagline {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: #eee;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 🌍 NAV BAR -->
+    <nav class="navbar">
+      <h2 class="logo">
+        🎫 <span class="wave">👋</span> VibeCheck Passport
+        <span class="tagline">✈️ Your feelings, your journey begins here</span>
+      </h2>
+      <div class="nav-links">
+        <a href="home.html">🏠 Home</a>
+        <a href="main.html">🛂 Mood Check-In</a>
+        <a href="passport.html">📖 Passport</a>
+        <a href="badgeboard.html">🎯 Badge Board</a>
+      </div>
+    </nav>
+
+    <!-- 🏠 MAIN WELCOME SECTION -->
+    <div class="container fade-in">
+      <h1>🌍 Welcome, Traveler!</h1>
+      <p class="sub">
+        Ready to explore your <b>emotional world</b>? Enter your name to start
+        your journey.
+      </p>
+
+      <div class="name-input-container">
+        <input
+          type="text"
+          id="username"
+          placeholder="Type your name here..."
+          class="name-input"
+        />
+        <!-- ✅ Only ONE button now -->
+        <button onclick="startJourney()">🚀 Start Journey</button>
+
+        <!-- 🎉 After Start Section -->
+        <div class="after-start">
+          <p class="after-text">
+            ✈️ Your passport will fill with vibes, stamps & badges!
+          </p>
+          <div class="emoji-shuffle">
+            <span>🌎</span>
+            <span>✈️</span>
+            <span>🎒</span>
+            <span>📸</span>
+            <span>🛂</span>
+            <!-- <span>😄</span>
+            <span>😭</span>
+            <span>😎</span>
+            <span>🌈</span>
+            <span>🤩</span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // if username already saved, show it
+      const storedName = localStorage.getItem("username");
+      if (storedName) {
+        document.getElementById("travelerName").innerText = storedName;
+      }
+
+      function startJourney() {
+        const name = document.getElementById("username").value.trim();
+        if (!name) {
+          alert("✍️ Please enter your name to start the journey!");
+          return;
+        }
+        localStorage.setItem("username", name);
+        window.location.href = "main.html";
+      }
+    </script>
+  </body>
+</html>
